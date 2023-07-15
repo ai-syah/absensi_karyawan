@@ -19,7 +19,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />}>
-          <Route path="" element={<Home />}></Route>\<Route path="/karyawan" element={<Karyawan />}></Route>
+          <Route path="" element={<Home />}></Route>
+          <Route path="/karyawan" element={<Karyawan />}></Route>
           <Route path="/create" element={<AddKaryawan />}></Route>
           <Route path="/karyawanEdit/:id" element={<KaryawanEdit />}></Route>
           <Route path="/absensi" element={<Absensi />}></Route>
@@ -29,8 +30,9 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/start" element={<Start />}></Route>
         <Route path="/karyawanLogin" element={<KaryawanLogin />}></Route>
-        <Route path="/karyawanMenu/:id" element={<KaryawanMenu />}></Route>
-        <Route path="/keteranganizin" element={<KeteranganIzin />}></Route>
+        <Route path="/karyawanMenu/:id" element={<KaryawanMenu />}>
+          <Route path="/karyawanMenu/:id/keteranganizin/" element={<KeteranganIzin />}></Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
