@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
+import KeteranganIzin from "./KeteranganIzin";
 
 function KaryawanMenu() {
   const { id } = useParams();
@@ -16,6 +17,9 @@ function KaryawanMenu() {
   const formatTanggal = format(tanggal, "yyyy-MM-dd");
   const [klikMasuk, setKlikMasuk] = useState(false);
   const [klikKeluar, setKlikKeluar] = useState(false);
+  const [showFormMasuk, setShowFormMasuk] = useState(true);
+  const [showFormKeluar, setShowFormKeluar] = useState(true);
+  const [showKeteranganIzin, setShowKeteranganIzin] = useState(true);
 
   useEffect(() => {
     axios
@@ -26,7 +30,7 @@ function KaryawanMenu() {
 
   const handleSubmitMasuk = (e) => {
     e.preventDefault();
-    const jamSekarang = new Date().toLocaleTimeString();
+    const jamSekarang = new Date().toLocaleTimeString("en-US", { hour12: false });
     setMasuk(jamSekarang);
 
     axios
@@ -46,7 +50,7 @@ function KaryawanMenu() {
 
   const handleSubmitKeluar = (e) => {
     e.preventDefault();
-    const jamSekarang = new Date().toLocaleTimeString();
+    const jamSekarang = new Date().toLocaleTimeString("en-US", { hour12: false });
     setKeluar(jamSekarang);
 
     axios
@@ -73,6 +77,12 @@ function KaryawanMenu() {
       .catch((err) => console.log(err));
   };
 
+  const handleKeteranganIzinClick = () => {
+    setShowFormMasuk(false);
+    setShowFormKeluar(false);
+    setShowKeteranganIzin(false);
+  };
+
   return (
     <div>
       <div className="d-flex justify-content-center flex-column align-items-center mt-3">
@@ -82,38 +92,44 @@ function KaryawanMenu() {
           <h5>Nama : {karyawan.nama}</h5>
           <h5>Email : {karyawan.email}</h5>
         </div>
-        <>
-          <h1>Silahkan isi absensi anda</h1>
-          <form className="m-1" onSubmit={handleSubmitMasuk}>
-            <label className="form-label text-center">Jam Masuk :</label>
-            <input type="time" value={masuk} onChange={(e) => setMasuk(e.target.value)} readOnly disabled={klikMasuk} className="input-border" />
-            <label className="form-label text-center">Tanggal Masuk :</label>
-            <DatePicker selected={tanggal} onChange={(tanggal) => setTanggal(tanggal)} readOnly disabled={klikMasuk} className="input-border" />
-            {klikMasuk ? (
-              <p>Anda sudah absen masuk!</p>
-            ) : (
-              <button className="ms-4 btn btn-primary " type="submit">
-                Masuk
-              </button>
-            )}
-          </form>
-          <form className="m-1" onSubmit={handleSubmitKeluar}>
-            <label className="form-label text-center">Jam Keluar :</label>
-            <input type="time" value={keluar} onChange={(e) => setKeluar(e.target.value)} readOnly disabled={klikKeluar} className="input-border" />
-            <label>Tanggal Masuk :</label>
-            <DatePicker selected={tanggal} onChange={(tanggal) => setTanggal(tanggal)} readOnly disabled={klikKeluar} className="input-border" />
-            {klikKeluar ? (
-              <p>Anda sudah absen keluar!</p>
-            ) : (
-              <button className="ms-4 btn btn-primary " type="submit">
-                Keluar
-              </button>
-            )}
-          </form>
-        </>
-        <button onClick={(e) => navigate("/keteranganizin")} className="btn btn-primary btn-lg mt-3">
-          Keterangan Izin
-        </button>
+        {showFormMasuk && (
+          <div>
+            <h1>Silahkan isi absensi anda</h1>
+
+            <form className="m-1" onSubmit={handleSubmitMasuk}>
+              <label className="form-label text-center">Jam Masuk :</label>
+              <input type="time" value={masuk} onChange={(e) => setMasuk(e.target.value)} readOnly disabled className="input-border" />
+              <label className="form-label text-center">Tanggal Masuk :</label>
+              <DatePicker selected={tanggal} onChange={(tanggal) => setTanggal(tanggal)} readOnly disabled className="input-border" />
+              {klikMasuk ? (
+                <p>Anda sudah absen masuk!</p>
+              ) : (
+                <button className="ms-4 btn btn-primary " type="submit">
+                  Masuk
+                </button>
+              )}
+            </form>
+
+            <form className="m-1" onSubmit={handleSubmitKeluar}>
+              <label className="form-label text-center">Jam Keluar :</label>
+              <input type="time" value={keluar} onChange={(e) => setKeluar(e.target.value)} readOnly disabled className="input-border" />
+              <label>Tanggal Masuk :</label>
+              <DatePicker selected={tanggal} onChange={(tanggal) => setTanggal(tanggal)} readOnly disabled className="input-border" />
+              {klikKeluar ? (
+                <p>Anda sudah absen keluar!</p>
+              ) : (
+                <button className="ms-4 btn btn-primary " type="submit">
+                  Keluar
+                </button>
+              )}
+            </form>
+          </div>
+        )}
+        {showKeteranganIzin && (
+          <Link to={`/karyawanMenu/${id}/keteranganizin`} onClick={handleKeteranganIzinClick} className="btn btn-primary btn-lg mt-3">
+            Keterangan Izin
+          </Link>
+        )}
         <Outlet />
         <div>
           <button className="btn btn-danger mt-3" onClick={handleLogout}>
