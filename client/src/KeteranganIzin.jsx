@@ -58,12 +58,12 @@ function KeteranganIzin() {
               <input type="text" className="form-control" id="alasanIzin" value={alasanIzin} onChange={(e) => setAlasanIzin(e.target.value)} />
             </div>
             <div className="col-12 mb-3">
-              <label className="form-label text-center">Jam:</label>
-              <input type="time" value={waktu} onChange={(e) => setWaktu(e.target.value)} readOnly className="input-border" />
+              <label className="form-label text-center">Jam : </label>
+              <input type="time" value={waktu} onChange={(e) => setWaktu(e.target.value)} readOnly disabled className="input-border" />
             </div>
             <div className="col-12 mb-3">
-              <label className="form-label text-center">Tanggal:</label>
-              <DatePicker selected={tanggal} onChange={(date) => setTanggal(date)} readOnly className="input-border" />
+              <label className="form-label text-center">Tanggal : </label>
+              <DatePicker selected={tanggal} onChange={(date) => setTanggal(date)} readOnly disabled className="input-border" />
             </div>
             <div className="col-12 mb-3">
               <label className="form-label text-center" htmlFor="inputGroupFile01">
